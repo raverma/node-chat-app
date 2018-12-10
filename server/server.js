@@ -22,6 +22,19 @@ io.on('connection', (socket)=> {
         console.log('client disconnected');
     });
     
+
+    socket.emit('welcome', {
+        from: 'admin',
+        text: 'Welcome to the chat app',
+        createdAt: new Date().getTime()
+    });
+
+    socket.broadcast.emit('userJoined',{
+        from: 'admin',
+        text: 'A new user has joined',
+        createdAt: new Date().getTime()
+    });
+
     // socket.emit('newEmail',{
     //     from: 'rahul@gmail.com',
     //     text: 'Hey. How are you?',
@@ -33,20 +46,20 @@ io.on('connection', (socket)=> {
     //     console.log('createEmail', newEmail);
     // });
 
-    var currentDate = new Date();
-    var newMessage = {
-        to: null,
-        text: null,
-        createdAt: null
-    };
+   
     socket.on('createMessage', (message)=>{
         console.log('Message: ' + message.text + ' ..Received from ' + message.to);  
 
-        io.emit('newMessage',  {
-            from: message.to,
-            text: message.text,
-            createdAt: new Date().getTime()
-        });
+        // io.emit('newMessage',  {
+        //     from: message.to,
+        //     text: message.text,
+        //     createdAt: new Date().getTime()
+        // });
+        socket.broadcast.emit('newMessage',  {
+                from: message.to,
+                text: message.text,
+                createdAt: new Date().getTime()
+            });
     });
 
 
