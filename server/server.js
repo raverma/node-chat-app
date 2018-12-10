@@ -41,13 +41,14 @@ io.on('connection', (socket)=> {
     };
     socket.on('createMessage', (message)=>{
         console.log('Message: ' + message.text + ' ..Received from ' + message.to);  
+
+        io.emit('newMessage',  {
+            from: message.to,
+            text: message.text,
+            createdAt: new Date().getTime()
+        });
     });
-   
-    socket.emit('newMessage', {
-        from: 'rahul@gmail.com',
-        text: 'Hey. How are you?',
-        createdAt: 1233
-    });
+
 
 });
 server.listen(port, () => {

@@ -22,7 +22,7 @@ socket.on('newEmail', function(Email){
 });
 
 socket.on('newMessage', function(newMsg){
-    document.getElementById('lblmsg').innerHTML='New message received :<br /> from ' + newMsg.from + ' <br />Message:' + newMsg.text + '<br/>';
+    document.getElementById('lblmsg').innerHTML='New message received :<br /> From: ' + newMsg.from + ' <br />Message:' + newMsg.text + '<br/>';
 });
 
 function sendMessage(){
