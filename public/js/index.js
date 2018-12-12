@@ -39,7 +39,8 @@ function sendMessage(){
     var text = document.getElementById('txtmsg').value;
 
     socket.emit('createMessage', {
-        to: user,
+        from: user,
         text: text
     });
 }
+
