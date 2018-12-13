@@ -40,10 +40,10 @@ io.on('connection', (socket)=> {
     // });
 
    
-    socket.on('createMessage', (message)=>{
-        console.log('Message: ' + message.text + ' ..Received from ' + message.from);  
+    socket.on('createMessage', (message, callback)=>{
         io.emit('newMessage', generateMessage(message.from, message.text));
         
+        callback();
         // io.emit('newMessage',  {
         //     from: message.to,
         //     text: message.text,

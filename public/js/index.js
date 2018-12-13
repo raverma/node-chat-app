@@ -15,32 +15,43 @@ socket.on('disconnect', function() {
     document.getElementById('lblmsg').innerHTML='Disconnected from server';
 });
 
-socket.on('newEmail', function(Email){
-    document.getElementById('lblmsg').innerHTML='New Email';
-
-    console.log(Email);
-});
-
 socket.on('newMessage', function(newMsg){
-    document.getElementById('lblmsg').innerHTML='New message received :<br /> From: ' + newMsg.from + ' <br />Message:' + newMsg.text + '<br/>';
+    funcMessage(newMsg);
 });
 
+
+var funcMessage = function(message) {
+    var li = $('<li></li>');
+    li.text(`${message.from}: ${message.text}`);
+    $("#messages").append(li);
+};
 
 socket.on('welcome', function(msg){
-    document.getElementById('lblmsg').innerHTML = 'New message received :<br /> From: ' + msg.from + ' <br />Message:' + msg.text + '<br/>';
+    funcMessage(msg);
 });
 
 socket.on('userJoined', function(msg){
-    document.getElementById('lblmsg').innerHTML = 'New message received :<br /> From: ' + msg.from + ' <br />Message:' + msg.text + '<br/>';
+    funcMessage(msg);
 });
 
-function sendMessage(){
-    var user = document.getElementById('txtuser').value;
-    var text = document.getElementById('txtmsg').value;
+// function sendMessage(){
+//     var user = document.getElementById('txtuser').value;
+//     var text = document.getElementById('txtmsg').value;
+
+//     socket.emit('createMessage', {
+//         from: user,
+//         text: text
+//     });
+// }
+
+$('#message-form').on('submit', function (e) {
+    //prevent the default behavior of submit event
+    e.preventDefault();
 
     socket.emit('createMessage', {
-        from: user,
-        text: text
+        from: 'User',
+        text: $('[name=message').val()
+    }, function () {
+        console.log('asdf');
     });
-}
-
+});
