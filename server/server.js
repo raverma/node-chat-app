@@ -1,4 +1,4 @@
-const {generateMessage} = require('./utils/message');
+const {generateMessage, generateLocationMessage} = require('./utils/message');
 const path = require('path');
 const publicPath = path.join(__dirname, '../public');
 const express = require('express');
@@ -56,6 +56,9 @@ io.on('connection', (socket)=> {
         //     });
     });
 
+    socket.on('createLocationMessage', (coords)=>{
+        io.emit('newLocationMessage', generateLocationMessage('admin',coords.latitude, coords.longitude));
+    });
 
 });
 server.listen(port, () => {
