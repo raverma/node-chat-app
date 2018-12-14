@@ -22,9 +22,15 @@ socket.on('newMessage', function(newMsg){
 
 var funcMessage = function(message) {
     var formattedTime = moment(message.createdAt).format('h:mm a');
-    var li = $('<li></li>');
-    li.text(`${message.from} ${formattedTime}: ${message.text}`);
-    $("#messages").append(li);
+    var template = $('#message-template').html();
+    var html = Mustache.render(template, {
+        text: message.text,
+        from: message.from,
+        createdAt:formattedTime
+    });
+
+    $('#messages').append(html);
+
 };
 
 socket.on('welcome', function(msg){
@@ -47,13 +53,14 @@ socket.on('userJoined', function(msg){
 
 socket.on('newLocationMessage', function(msg) {
     var formattedTime = moment(msg.createdAt).format('h:mm a');
-    var li = $('<li></li>');
-    var a = $('<a target="_blank">My current location</a>');
+    var template = $('#location-message-template').html();
+    var html = Mustache.render(template, {
+        from: msg.from,
+        url: msg.url,
+        createdAt:formattedTime
+    });
 
-    li.text(`${msg.from} ${formattedTime}:`);
-    a.attr('href', msg.url);
-    li.append(a);
-    $('#messages').append(li);
+    $('#messages').append(html);
 });
 
 $('#message-form').on('submit', function (e) {
