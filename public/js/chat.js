@@ -16,8 +16,16 @@ function scrollToBottom(){
 }
 
 socket.on('connect', function() {
-    document.getElementById('lblmsg').innerHTML='Connected to the server';
+   var params = jQuery.deparam(window.location.search);
 
+    socket.emit('join', params, function(err){
+        if (err){
+            alert(err);
+            window.location.href = '/';
+        } else {
+            console.log('No error');
+        }
+    })
    
 });     
 
@@ -28,6 +36,16 @@ socket.on('connect', function() {
 
 socket.on('disconnect', function() {
     document.getElementById('lblmsg').innerHTML='Disconnected from server';
+});
+
+socket.on('updateUserList', function (users){
+    console.log('Users list', users);
+    var ol = $('<ol></ol>');
+    users.forEach(function(user) {
+        var li = $('<li></li>').text(user);
+        ol.append(li);
+    }, this);
+    $('#users').html(ol);
 });
 
 socket.on('newMessage', function(newMsg){
